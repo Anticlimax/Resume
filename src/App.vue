@@ -18,12 +18,11 @@
   import Editor from './components/editor.vue'
   import TopBar from './components/topBar.vue'
   import icons from './assets/icons'
+  import store from './store/index'
 
   export default {
     name: 'app',
-    data(){
-      return {}
-    },
+    store,
     components: {
       TopBar,
       Preview,
@@ -61,9 +60,10 @@
       max-width: 1440px;
       justify-content: space-around;
       padding: 16px;
+      width: 100%;
       margin: 0 auto;
       #editor {
-        width: 504px;
+        min-width: 35%;
         height: 925px;
         margin-right: 16px;
 
@@ -73,7 +73,7 @@
 
       }
       #preview {
-        width: 880px;
+        flex-grow: 1;
         height: 925px;
 
         background-color: white;

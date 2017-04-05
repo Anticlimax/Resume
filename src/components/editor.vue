@@ -14,11 +14,18 @@
     <div class="main">
       <ul>
         <li v-for="item in resume.config" v-show="item.field === selected">
-          <div class="resumeField" v-for="(value,key) in resume[item.field]">
+          <div v-if="resume[item.field] instanceof Array">
+            <div  v-for="item1 in resume[item.field]">
+              <div class="resumeField" v-for="(value,key) in item1">
+                <label > {{ key }}</label>
+                <input type="text">
+              </div>
+            </div>
+          </div>
+          <div class="resumeField" v-for="(value,key) in resume[item.field]" v-else="">
             <label> {{ key }}</label>
             <input type="text" v-model="resume[item.field][key]">
           </div>
-
         </li>
       </ul>
     </div>
@@ -27,30 +34,18 @@
 <script>
   export default {
     name: 'editor',
-    data(){
-      return {
-        selected: 'profile',
-        resume: {
-          config: [
-            {field: 'profile', icon: 'id'},
-            {field: 'workHistory', icon: 'work'},
-            {field: 'education', icon: 'book'},
-            {field: 'projects', icon: 'heart'},
-            {field: 'awards', icon: 'cup'},
-            {field: 'contacts', icon: 'phone'}
-          ],
-          profile: {
-            name: '',
-            city: '',
-            title: ''
-          },
-          workHistory: {},
-          education: {},
-          projects: {},
-          awards: {},
-          contacts: {}
-
+    computed:{
+      selected:{
+        get(){
+          return this.$store.state.selected
+        },
+        set(value){
+          return this.$store.commit('switchTab',value)
         }
+      },
+      resume(){
+          return this.$store.state.resume
+
       }
     },
     method: {}
