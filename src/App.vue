@@ -30,6 +30,12 @@
     },
     created(){
       document.body.insertAdjacentHTML('afterbegin',icons)
+
+      let state = localStorage.getItem('state')
+      if(state){
+        state = JSON.parse(state)
+      }
+      this.$store.commit('initState',state)
     }
   }
 </script>
@@ -78,6 +84,7 @@
 
         background-color: white;
         box-shadow: inset 1px 0px 2px 2px lightgray;
+        overflow: scroll;
 
       }
     }

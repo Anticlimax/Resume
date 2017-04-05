@@ -15,16 +15,16 @@
       <ul>
         <li v-for="item in resume.config" v-show="item.field === selected">
           <div v-if="resume[item.field] instanceof Array">
-            <div  v-for="item1 in resume[item.field]">
+            <div  v-for="(item1,i) in resume[item.field]">
               <div class="resumeField" v-for="(value,key) in item1">
                 <label > {{ key }}</label>
-                <input type="text">
+                <input type="text" :value="value" @input="changeResumeField(`${item.field}.${i}.${key}`,$event.target.value)">
               </div>
             </div>
           </div>
           <div class="resumeField" v-for="(value,key) in resume[item.field]" v-else="">
             <label> {{ key }}</label>
-            <input type="text" v-model="resume[item.field][key]">
+            <input type="text" :value="value" @input="changeResumeField(`${item.field}.${key}`,$event.target.value)">
           </div>
         </li>
       </ul>
@@ -48,7 +48,14 @@
 
       }
     },
-    method: {}
+    methods: {
+      changeResumeField(path,value){
+        this.$store.commit('updateResume',{
+          path,
+          value
+          })
+      }
+    }
   }
 </script>
 <style lang="scss" scoped>

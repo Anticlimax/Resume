@@ -1,17 +1,49 @@
 <template>
   <div id="topBar">
     <div class="text">Resume</div>
-    <div class="btn-wrapper">
-      <a href="#" class="login">登陆</a>
-      <a href="#" class="registry">注册</a>
+    <div v-if="logined" class="userActions">
+      <span>你好, {{ user.username }}</span>
+      <a href="#" class="registry">登出</a>
     </div>
+    <div v-else class="userActions">
+      <div class="btn-wrapper">
+        <a href="#" class="login">登陆</a>
+        <a href="#" class="registry" @click.prevent="signUpDialogVisible = true " >注册</a>
+      </div>
+      <myDialog title="注册" :visible="signUpDialogVisible" @close="signUpDialogVisible = false">
+        <signUpForm @success="login($event)"></signUpForm>
+      </myDialog>
+    </div>
+
   </div>
 </template>
 <script>
+
+  import myDialog from './myDialog.vue'
+  import signUpForm from './signUpForm.vue'
+
   export default {
     data(){
       return {
-
+        signUpDialogVisible: false
+      }
+    },
+    components:{
+      myDialog,
+      signUpForm
+    },
+    computed:{
+      user(){
+        return this.$store.state.user
+      },
+      logined(){
+        return this.user.id
+      }
+    },
+    methods:{
+      login(user){
+        this.signUpDialogVisible = false
+        this.$store.commit('setUser',user)
       }
     }
   }
@@ -28,7 +60,7 @@
       display: flex;
       .login {
         display: block;
-        font-size: 20px;
+        font-size: 18px;
         color: white;
         background-color: #33CC99;
         padding: 6px 16px;
@@ -50,6 +82,12 @@
         &:hover {
           background-color: #cccccc;
         }
+      }
+    }
+    .actions{
+      display: flex;
+      .userActions{
+        margin-left: 3em;
       }
     }
   }
