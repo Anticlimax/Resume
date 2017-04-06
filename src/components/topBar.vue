@@ -2,16 +2,19 @@
   <div id="topBar">
     <div class="text">Resume</div>
     <div v-if="logined" class="userActions">
-      <span>你好, {{ user.username }}</span>
-      <a href="#" class="registry">登出</a>
+      <span class="welcone">你好, {{ user.username }}</span>
+      <a href="#" class="registry" @click.prevent="signOut">登出</a>
     </div>
     <div v-else class="userActions">
       <div class="btn-wrapper">
-        <a href="#" class="login">登陆</a>
+        <a href="#" class="login" @click.prevent="signInDialogVisible = true">登陆</a>
         <a href="#" class="registry" @click.prevent="signUpDialogVisible = true " >注册</a>
       </div>
       <myDialog title="注册" :visible="signUpDialogVisible" @close="signUpDialogVisible = false">
-        <signUpForm @success="login($event)"></signUpForm>
+        <signUpForm @success="signIn($event)"></signUpForm>
+      </myDialog>
+      <myDialog title="登陆" :visible="signInDialogVisible" @close="signInDialogVisible = false">
+        <signInForm @success="signIn($event)"></signInForm>
       </myDialog>
     </div>
 
@@ -21,16 +24,20 @@
 
   import myDialog from './myDialog.vue'
   import signUpForm from './signUpForm.vue'
+  import signInForm from './signInForm.vue'
+  import AV from '../lib/leancloud'
 
   export default {
     data(){
       return {
-        signUpDialogVisible: false
+        signUpDialogVisible: false,
+        signInDialogVisible: false
       }
     },
     components:{
       myDialog,
-      signUpForm
+      signUpForm,
+      signInForm
     },
     computed:{
       user(){
@@ -41,9 +48,13 @@
       }
     },
     methods:{
-      login(user){
+      signIn(user){
         this.signUpDialogVisible = false
         this.$store.commit('setUser',user)
+      },
+      signOut(){
+        AV.User.logOut()
+        this.$store.commit('removeUser')
       }
     }
   }
@@ -88,6 +99,9 @@
       display: flex;
       .userActions{
         margin-left: 3em;
+        .welcome {
+          margin-right: .5em;
+        }
       }
     }
   }
