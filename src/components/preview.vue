@@ -8,6 +8,9 @@
         <small> {{ resume.profile.city }}</small>
         <small> {{ resume.profile.birthday }}</small>
       </h2>
+      <h2>
+        <small> {{ resume.profile.title }}</small>
+      </h2>
     </section>
 
     <section data-name="projects" v-if="resume.projects && resume.projects.length > 0">

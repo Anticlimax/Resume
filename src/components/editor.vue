@@ -16,14 +16,15 @@
         <li v-for="item in resumeConfig" v-show="item.field === selected">
           <div v-if="item.type === 'array'">
             <h2>{{ $t(`resume.${item.field}._`) }}</h2>
-            <div  v-for="(item1,i) in resume[item.field]">
+            <div  v-for="(item1,i) in resume[item.field]" class="subItem">
+              <button class="button remove" @click="removeResumeSubfield(item.field, i)">删除</button>
               <div class="resumeField" v-for="(value,key) in item1">
                 <label > {{ $t(`resume.${item.field}.${key}`) }}</label>
                 <input type="text" :value="value" @input="changeResumeField(`${item.field}.${i}.${key}`,$event.target.value)">
               </div>
               <hr>
             </div>
-            <button class="button" @click="addResumeSubfield(item.field)">新增</button>
+            <button class="button primary" @click="addResumeSubfield(item.field)">新增</button>
           </div>
           <div class="resumeField" v-for="(value,key) in resume[item.field]" v-else="">
             <label> {{ $t(`resume.profile.${key}`) }}</label>
@@ -62,6 +63,9 @@
       },
       addResumeSubfield(field){
         this.$store.commit('addResumeSubfield',{field})
+      },
+      removeResumeSubfield(field,index){
+        this.$store.commit('removeResumeSubfield',{field,index})
       }
     }
   }
@@ -113,6 +117,13 @@
       width:24px;
       height:24px;
     }
-
+    .subItem{
+      position: relative;
+      .button.remove {
+        position: absolute;
+        right:0;
+        top: 0;
+      }
+    }
   }
 </style>
