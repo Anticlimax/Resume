@@ -50,7 +50,7 @@
 
     background-color: #0099CC;
     font-size: 20px;
-    header {
+    >header {
       width: 100%;
 
       background-color: white;

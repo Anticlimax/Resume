@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div id="signIn">
     <form @submit.prevent="signIn">
       <div class="row">
         <label>用户名</label>
@@ -46,3 +46,7 @@
     }
   }
 </script>
+<style scoped lang="scss">
+
+  
+</style>
